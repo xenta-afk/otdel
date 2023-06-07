@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Хранилище OtdelModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="documents">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Номер документа" Type="int" Nullable="false" />
+    <Property Name="Дата документа" Type="date" Nullable="false" />
+    <Property Name="Тип документа (приход, расход)" Type="varchar" MaxLength="6" Nullable="false" />
+    <Property Name="Описание документа" Type="varchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="employees">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ФИО" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Дата рождения" Type="date" Nullable="false" />
+    <Property Name="Пол" Type="varchar" MaxLength="1" Nullable="false" />
+    <Property Name="Адрес" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Номер телефона" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="Должность" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Дата найма" Type="date" Nullable="false" />
+    <Property Name="Заработная плата" Type="money" Nullable="false" />
+    <Property Name="Дата увольнения" Type="date" />
+  </EntityType>
+  <EntityType Name="links">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="id сотрудника" Type="int" Nullable="false" />
+    <Property Name="id документа" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <Association Name="FK_links_documents">
+    <End Role="documents" Type="Self.documents" Multiplicity="1" />
+    <End Role="links" Type="Self.links" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="documents">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="links">
+        <PropertyRef Name="id документа" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_links_employees">
+    <End Role="employees" Type="Self.employees" Multiplicity="1" />
+    <End Role="links" Type="Self.links" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="employees">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="links">
+        <PropertyRef Name="id сотрудника" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="Хранилище OtdelModelContainer">
+    <EntitySet Name="documents" EntityType="Self.documents" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="employees" EntityType="Self.employees" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="links" EntityType="Self.links" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_links_documents" Association="Self.FK_links_documents">
+      <End Role="documents" EntitySet="documents" />
+      <End Role="links" EntitySet="links" />
+    </AssociationSet>
+    <AssociationSet Name="FK_links_employees" Association="Self.FK_links_employees">
+      <End Role="employees" EntitySet="employees" />
+      <End Role="links" EntitySet="links" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

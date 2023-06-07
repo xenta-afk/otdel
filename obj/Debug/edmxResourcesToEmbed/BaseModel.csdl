@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="OtdelModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="document">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Номер_документа" Type="Int32" Nullable="false" />
+    <Property Name="Дата_документа" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="Тип_документа__приход__расход_" Type="String" MaxLength="6" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Описание_документа" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="links" Relationship="Self.FK_links_documents" FromRole="documents" ToRole="links" />
+  </EntityType>
+  <EntityType Name="employee">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ФИО" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Дата_рождения" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="Пол" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Адрес" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Номер_телефона" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Должность" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Дата_найма" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="Заработная_плата" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="Дата_увольнения" Type="DateTime" Precision="0" />
+    <NavigationProperty Name="links" Relationship="Self.FK_links_employees" FromRole="employees" ToRole="links" />
+  </EntityType>
+  <EntityType Name="link">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="id_сотрудника" Type="Int32" Nullable="false" />
+    <Property Name="id_документа" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="document" Relationship="Self.FK_links_documents" FromRole="links" ToRole="documents" />
+    <NavigationProperty Name="employee" Relationship="Self.FK_links_employees" FromRole="links" ToRole="employees" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <Association Name="FK_links_documents">
+    <End Role="documents" Type="Self.document" Multiplicity="1" />
+    <End Role="links" Type="Self.link" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="documents">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="links">
+        <PropertyRef Name="id_документа" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_links_employees">
+    <End Role="employees" Type="Self.employee" Multiplicity="1" />
+    <End Role="links" Type="Self.link" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="employees">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="links">
+        <PropertyRef Name="id_сотрудника" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="OtdelEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="documents" EntityType="Self.document" />
+    <EntitySet Name="employees" EntityType="Self.employee" />
+    <EntitySet Name="links" EntityType="Self.link" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+    <AssociationSet Name="FK_links_documents" Association="Self.FK_links_documents">
+      <End Role="documents" EntitySet="documents" />
+      <End Role="links" EntitySet="links" />
+    </AssociationSet>
+    <AssociationSet Name="FK_links_employees" Association="Self.FK_links_employees">
+      <End Role="employees" EntitySet="employees" />
+      <End Role="links" EntitySet="links" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
