@@ -1,0 +1,46 @@
+﻿<Window x:Class="OtdelKadrov.Window3"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:OtdelKadrov"
+        mc:Ignorable="d"
+        Title="HR Department" Height="450" Width="800" IsVisibleChanged="Window_IsVisibleChanged">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="40" />
+        </Grid.RowDefinitions>
+        <Button Content="Добавить" Width="85" Height="20" Grid.Row="2" Name="BtnAdd" Click="BtnAdd_Click" HorizontalAlignment="Center"/>
+        <Button Content="Документы" Width="85" Height="20" Grid.Row="2" Name="BtnDoc" Click="BtnDoc_Click" HorizontalAlignment="Left" Margin="10"/>
+
+        <!-- Заголовок страницы -->
+        <StackPanel Orientation="Horizontal" Margin="10">
+            <TextBlock Text="Информация о сотрудниках" FontSize="20" FontWeight="Bold" />
+        </StackPanel>
+
+        <!-- Таблица с информацией о сотрудниках -->
+        <DataGrid x:Name="employeesDataGrid" Margin="10" Grid.Row="1"
+                  AutoGenerateColumns="False" IsReadOnly="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ФИО" Binding="{Binding ФИО}" Width="*" />
+                <DataGridTextColumn Header="Дата рождения" Binding="{Binding Дата_рождения}" Width="*" />
+                <DataGridTextColumn Header="Пол" Binding="{Binding Пол}" Width="*" />
+                <DataGridTextColumn Header="Адрес" Binding="{Binding Адрес}" Width="*" />
+                <DataGridTextColumn Header="Номер телефона" Binding="{Binding Номер_телефона}" Width="*" />
+                <DataGridTextColumn Header="Должность" Binding="{Binding Должность}" Width="*" />
+                <DataGridTextColumn Header="Дата найма" Binding="{Binding Дата_найма}" Width="*" />
+                <DataGridTextColumn Header="Заработная плата" Binding="{Binding Заработная_плата}" Width="*" />
+                <DataGridTextColumn Header="Дата увольнения" Binding="{Binding Дата_увольнения}" Width="*" />
+                <DataGridTemplateColumn Width="auto">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="Редактировать" Name="BtnEdit" Click="BtnEdit_Click"></Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Window>
